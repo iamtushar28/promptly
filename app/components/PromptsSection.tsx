@@ -8,7 +8,7 @@ const PromptsSection = (props: Props) => {
         <section className="-mt-6 w-full h-auto rounded-b-lg border border-zinc-200 p-4 flex flex-col gap-4 dark:border-zinc-800">
 
             {/* title */}
-            <h4 className="font-semibold">
+            <h4 className="font-semibold dark:text-white">
                 All Prompts
             </h4>
 

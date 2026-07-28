@@ -71,7 +71,7 @@ const ViewPromptModal = () => {
                         {/* Close */}
                         <button
                             onClick={() => dispatch(closeViewPromptModal())}
-                            className="hidden h-10 w-10 cursor-pointer items-center justify-center rounded-lg text-zinc-600 transition-all duration-300 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white md:flex"
+                            className="h-10 w-10 cursor-pointer items-center justify-center rounded-lg text-zinc-600 transition-all duration-300 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white flex"
                         >
                             <IoClose className="text-xl" />
                         </button>
