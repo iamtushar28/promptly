@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Greeting from "./components/Greeting";
 import PromptSearch from "./components/PromptSearch";
 import PromptsSection from "./components/PromptsSection";
@@ -9,23 +8,24 @@ export default function Home() {
   return (
     <>
 
-      <section className="min-h-screen h-auto w-full p-4 md:p-6 pb-10 mt-16 bg-gray-50/40 flex flex-col gap-6">
+      {/* ================= Main Content ================= */}
+      <section className="mt-16 flex min-h-screen w-full flex-col gap-6 bg-gray-50/40 p-4 pb-10 transition-colors duration-300 dark:bg-zinc-950 md:p-6">
 
-        {/* Greeting screen section */}
+        {/* ================= Greeting Section ================= */}
         <Greeting />
 
-        {/* prompts filter section */}
+        {/* ================= Search & Filter Section ================= */}
         <PromptSearch />
 
-        {/* all prompts section */}
+        {/* ================= Prompts Section ================= */}
         <PromptsSection />
 
       </section>
 
-      {/* add new prompt modal */}
+      {/* ================= Add Prompt Modal ================= */}
       <AddPromptModal />
 
-      {/* view prompt modal */}
+      {/* ================= View Prompt Modal ================= */}
       <ViewPromptModal />
 
     </>

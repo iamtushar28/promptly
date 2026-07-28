@@ -27,11 +27,11 @@ const Greeting = () => {
 
             {/* ================= Greeting Section ================= */}
             <div>
-                <h2 className="text-xl font-semibold md:text-2xl">
+                <h2 className="text-xl font-semibold text-zinc-900 transition-colors duration-300 dark:text-white md:text-2xl">
                     Welcome back, Tushar! 👋
                 </h2>
 
-                <p className="text-sm text-zinc-400">
+                <p className="mt-1 text-sm text-zinc-500 transition-colors duration-300 dark:text-zinc-400">
                     Here's what's happening with your prompts today.
                 </p>
             </div>

@@ -22,7 +22,7 @@ const AddPromptModal = () => {
         /* ================= Overlay ================= */
         <section
             onClick={() => dispatch(closeAddPromptModal())}
-            className="fixed inset-0 z-50 overflow-y-auto bg-black/40 p-4"
+            className="fixed inset-0 z-50 overflow-y-auto bg-white/20 backdrop-blur-xs transition-all duration-300 dark:bg-black/30 p-4"
         >
             {/* ================= Modal Wrapper ================= */}
             <div className="flex min-h-full items-center justify-center py-6">
@@ -30,15 +30,15 @@ const AddPromptModal = () => {
                 {/* ================= Modal ================= */}
                 <div
                     onClick={(e) => e.stopPropagation()}
-                    className="w-full max-w-xl rounded-xl bg-white p-5 shadow-xl md:p-6"
+                    className="w-full max-w-xl rounded-xl border border-zinc-200 bg-white p-5 shadow-2xl transition-colors duration-300 dark:border-zinc-800 dark:bg-zinc-900 md:p-6"
                 >
                     {/* ================= Header ================= */}
                     <div>
-                        <h2 className="text-xl font-semibold">
+                        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
                             New Prompt
                         </h2>
 
-                        <p className="mt-1 text-sm text-zinc-500">
+                        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
                             Create a new prompt to save and reuse anytime.
                         </p>
                     </div>
@@ -50,7 +50,7 @@ const AddPromptModal = () => {
                         <div className="flex flex-col gap-2">
                             <label
                                 htmlFor="promptTitle"
-                                className="text-sm font-medium"
+                                className="text-sm font-medium text-zinc-800 dark:text-zinc-200"
                             >
                                 Title
                             </label>
@@ -59,7 +59,7 @@ const AddPromptModal = () => {
                                 id="promptTitle"
                                 type="text"
                                 placeholder="e.g. Social Media Post"
-                                className="h-11 w-full rounded-lg border border-zinc-200 px-4 text-sm outline-none transition-colors focus:border-blue-600"
+                                className="h-11 w-full rounded-lg border border-zinc-200 bg-white px-4 text-sm text-zinc-900 outline-none transition-all duration-300 placeholder:text-zinc-400 focus:border-blue-600 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500"
                             />
                         </div>
 
@@ -67,7 +67,7 @@ const AddPromptModal = () => {
                         <div className="flex flex-col gap-2">
                             <label
                                 htmlFor="prompt"
-                                className="text-sm font-medium"
+                                className="text-sm font-medium text-zinc-800 dark:text-zinc-200"
                             >
                                 Prompt
                             </label>
@@ -76,7 +76,7 @@ const AddPromptModal = () => {
                                 id="prompt"
                                 rows={3}
                                 placeholder="Write your prompt here..."
-                                className="w-full resize-none rounded-lg border border-zinc-200 p-4 text-sm outline-none transition-colors focus:border-blue-600"
+                                className="w-full resize-none rounded-lg border border-zinc-200 bg-white p-4 text-sm text-zinc-900 outline-none transition-all duration-300 placeholder:text-zinc-400 focus:border-blue-600 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500"
                             />
                         </div>
 
@@ -84,7 +84,7 @@ const AddPromptModal = () => {
                         <div className="flex flex-col gap-2">
                             <label
                                 htmlFor="category"
-                                className="text-sm font-medium"
+                                className="text-sm font-medium text-zinc-800 dark:text-zinc-200"
                             >
                                 Category
                             </label>
@@ -92,7 +92,7 @@ const AddPromptModal = () => {
                             <button
                                 id="category"
                                 type="button"
-                                className="flex h-11 w-full items-center justify-between rounded-lg border border-zinc-200 bg-white px-4 text-sm text-zinc-500 transition-colors hover:bg-zinc-50"
+                                className="flex h-11 w-full items-center justify-between rounded-lg border border-zinc-200 bg-white px-4 text-sm text-zinc-500 transition-all duration-300 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800"
                             >
                                 Select Category
 
@@ -104,10 +104,11 @@ const AddPromptModal = () => {
                         <div className="flex flex-col gap-2">
                             <label
                                 htmlFor="description"
-                                className="text-sm font-medium"
+                                className="text-sm font-medium text-zinc-800 dark:text-zinc-200"
                             >
                                 Description
-                                <span className="ml-1 text-zinc-400">
+
+                                <span className="ml-1 text-zinc-400 dark:text-zinc-500">
                                     (Optional)
                                 </span>
                             </label>
@@ -116,7 +117,7 @@ const AddPromptModal = () => {
                                 id="description"
                                 rows={2}
                                 placeholder="Add a short description..."
-                                className="w-full resize-none rounded-lg border border-zinc-200 p-4 text-sm outline-none transition-colors focus:border-blue-600"
+                                className="w-full resize-none rounded-lg border border-zinc-200 bg-white p-4 text-sm text-zinc-900 outline-none transition-all duration-300 placeholder:text-zinc-400 focus:border-blue-600 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500"
                             />
                         </div>
 
@@ -126,10 +127,8 @@ const AddPromptModal = () => {
                             {/* Cancel Button */}
                             <button
                                 type="button"
-                                onClick={() =>
-                                    dispatch(closeAddPromptModal())
-                                }
-                                className="h-11 w-full rounded-lg border border-zinc-200 bg-white px-6 text-sm font-medium transition-colors hover:bg-zinc-50 md:w-auto cursor-pointer"
+                                onClick={() => dispatch(closeAddPromptModal())}
+                                className="h-11 w-full cursor-pointer rounded-lg border border-zinc-200 bg-white px-6 text-sm font-medium text-zinc-700 transition-all duration-300 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 md:w-auto"
                             >
                                 Cancel
                             </button>
@@ -137,7 +136,7 @@ const AddPromptModal = () => {
                             {/* Create Button */}
                             <button
                                 type="submit"
-                                className="h-11 w-full rounded-lg bg-blue-600 px-6 text-sm font-medium text-white transition-colors hover:bg-blue-700 md:w-auto cursor-pointer"
+                                className="h-11 w-full cursor-pointer rounded-lg bg-blue-600 px-6 text-sm font-medium text-white transition-all duration-300 hover:bg-blue-700 md:w-auto"
                             >
                                 Create Prompt
                             </button>
