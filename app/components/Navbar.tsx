@@ -2,8 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
-import { FaAngleDown } from "react-icons/fa6";
-import { FaUserAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
 import ThemeToggle from "./ThemeToggle";
@@ -12,7 +10,6 @@ import { RootState } from "@/redux/store";
 import { openAddPromptModal } from "@/redux/features/modal/modalSlice";
 
 import { loginWithGoogle, logoutUser } from "@/firebase/auth";
-import Image from "next/image";
 import ProfileDropdown from "./ProfileDropdown";
 
 const Navbar = () => {

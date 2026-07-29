@@ -52,7 +52,7 @@ const ProfileDropdown = ({
 
                 {/* Dropdown Arrow */}
                 <FaAngleDown
-                    className={`transition-all duration-300 ${isOpen ? "rotate-180" : ""
+                    className={`transition-all dark:text-white duration-300 ${isOpen ? "rotate-180" : ""
                         }`}
                 />
 
