@@ -1,15 +1,71 @@
 'use client';
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { FaAngleDown } from "react-icons/fa6";
-import { useDispatch } from "react-redux";
-import { openAddPromptModal } from "@/redux/features/modal/modalSlice";
-import ThemeToggle from "./ThemeToggle";
 import { FaUserAlt } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+
+import ThemeToggle from "./ThemeToggle";
+
+import { RootState } from "@/redux/store";
+import { openAddPromptModal } from "@/redux/features/modal/modalSlice";
+
+import { loginWithGoogle, logoutUser } from "@/firebase/auth";
+import Image from "next/image";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Navbar = () => {
     const dispatch = useDispatch();
+
+    // ================= Getting User State =================
+    const { user, loading } = useSelector(
+        (state: RootState) => state.auth
+    );
+
+    // ================= Dropdown State =================
+    const [isOpen, setIsOpen] = useState(false);
+
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // ================= User Login =================
+    const handleLogin = async () => {
+        try {
+            await loginWithGoogle();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // ================= User Logout =================
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+            setIsOpen(false);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // ================= Close Dropdown on Outside Click =================
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () =>
+            document.removeEventListener(
+                "mousedown",
+                handleClickOutside
+            );
+    }, []);
 
     return (
         // ================= Navigation Bar =================
@@ -43,21 +99,38 @@ const Navbar = () => {
                         </span>
                     </button>
 
-                    {/* ================= Theme Toggle ================= */}
-                    <ThemeToggle />
+                    {/* ================= Show Theme Toggle Only Before Login ================= */}
+                    {user && <ThemeToggle />}
 
-                    {/* ================= User Profile ================= */}
-                    <button
-                        className="flex cursor-pointer items-center gap-2 rounded-lg p-1 transition-colors duration-300 hover:bg-zinc-100 dark:hover:bg-zinc-900"
-                    >
-                        {/* User Avatar */}
-                        <div className="h-8 w-8 rounded-full border border-zinc-200 bg-zinc-200 transition-colors duration-300 dark:border-zinc-700 dark:bg-zinc-800 md:h-10 md:w-10 flex justify-center items-center dark:text-white">
-                            <FaUserAlt />
-                        </div>
+                    {/* ================= Authentication Section ================= */}
 
-                        {/* Dropdown Arrow */}
-                        <FaAngleDown className="text-sm text-zinc-600 transition-colors duration-300 dark:text-zinc-400 md:text-base" />
-                    </button>
+                    {loading ? (
+
+                        /* ================= Authentication Loading ================= */
+                        <div className="h-10 w-24 animate-pulse rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+
+                    ) : user ? (
+
+                        /* ================= Logged In User ================= */
+                        <ProfileDropdown
+                            user={user}
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
+                            dropdownRef={dropdownRef}
+                            handleLogout={handleLogout}
+                        />
+
+                    ) : (
+
+                        /* ================= User Login Button ================= */
+                        <button
+                            onClick={handleLogin}
+                            className="flex h-10 cursor-pointer items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-700 active:scale-95"
+                        >
+                            Login
+                        </button>
+
+                    )}
 
                 </div>
 

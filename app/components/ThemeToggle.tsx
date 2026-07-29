@@ -26,7 +26,7 @@ const ThemeToggle = () => {
     return (
         <button
             onClick={toggleTheme}
-            className="flex h-8 w-8 items-center justify-center rounded-full dark:text-white bg-zinc-100 dark:bg-zinc-800 text-lg transition md:h-10 md:w-10 cursor-pointer"
+            className="flex items-center justify-center rounded-full dark:text-white bg-zinc-100 dark:bg-zinc-800 text-lg transition h-10 w-10 cursor-pointer"
         >
             {isDark ? <MdLightMode /> : <MdDarkMode />}
         </button>

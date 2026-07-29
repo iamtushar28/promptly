@@ -18,6 +18,20 @@ const AddPromptModal = () => {
     /* Don't render if modal is closed */
     if (!isOpen) return null;
 
+    // prompt categories
+    const categories = [
+        "Coding",
+        "Marketing",
+        "Content Writing",
+        "Email",
+        "Resume",
+        "SQL",
+        "Design",
+        "Social Media",
+        "Productivity",
+        "Others",
+    ];
+
     return (
         /* ================= Overlay ================= */
         <section
@@ -82,22 +96,25 @@ const AddPromptModal = () => {
 
                         {/* ================= Category ================= */}
                         <div className="flex flex-col gap-2">
-                            <label
-                                htmlFor="category"
-                                className="text-sm font-medium text-zinc-800 dark:text-zinc-200"
-                            >
+                            <label htmlFor="category" className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
                                 Category
                             </label>
 
-                            <button
+                            <select
                                 id="category"
-                                type="button"
-                                className="flex h-11 w-full items-center justify-between rounded-lg border border-zinc-200 bg-white px-4 text-sm text-zinc-500 transition-all duration-300 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                                className="h-11 w-full rounded-lg border border-zinc-200 bg-white px-4 text-sm text-zinc-900 outline-none transition-all duration-300 placeholder:text-zinc-400 focus:border-blue-600 dark:border-zinc-700 dark:bg-zinc-950 dark:text-white dark:placeholder:text-zinc-500"
+                                defaultValue=""
                             >
-                                Select Category
+                                <option value="" disabled>
+                                    Select Category
+                                </option>
 
-                                <FaAngleDown className="text-xs" />
-                            </button>
+                                {categories.map((category) => (
+                                    <option key={category} value={category}>
+                                        {category}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
                         {/* ================= Description ================= */}
