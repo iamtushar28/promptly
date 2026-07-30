@@ -1,42 +1,54 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import PromptCard from './PromptCard'
-import { Prompt } from "@/types/prompt";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import PromptCard from "./PromptCard";
+import PromptCardSkeleton from "./PromptCardSkeleton";
+
 import { PromptService } from "@/services/prompt.service";
-import { RootState } from "@/redux/store";
-import { useSelector } from 'react-redux';
-import PromptCardSkeleton from './PromptCardSkeleton';
 
-type Props = {}
+import { RootState, AppDispatch } from "@/redux/store";
 
-const PromptsSection = (props: Props) => {
+import { setPrompts } from "@/redux/features/prompt/promptSlice";
+import { selectFilteredPrompts } from "@/redux/features/prompt/promptSelectors";
 
+const PromptsSection = () => {
+    const dispatch = useDispatch<AppDispatch>();
 
     const user = useSelector((state: RootState) => state.auth.user);
 
+    // Filtered + Sorted + Pinned First
+    const prompts = useSelector(selectFilteredPrompts);
+
     const [loading, setLoading] = useState(true);
-    const [prompts, setPrompts] = useState<Prompt[]>([]);
 
     useEffect(() => {
-        if (!user) return;
+        if (!user) {
+            setLoading(false);
+            return;
+        }
 
         let unsubscribe: (() => void) | undefined;
 
         const loadPrompts = async () => {
             try {
-                // Initial fetch
+                // Initial Fetch
                 const data = await PromptService.getAll(user.uid);
-                setPrompts(data);
 
-                // Hide skeleton after first fetch
+                dispatch(setPrompts(data));
+
                 setLoading(false);
 
-                // Start realtime updates
-                unsubscribe = PromptService.subscribe(user.uid, (data) => {
-                    setPrompts(data);
-                });
+                // Realtime Updates
+                unsubscribe = PromptService.subscribe(
+                    user.uid,
+                    (prompts) => {
+                        dispatch(setPrompts(prompts));
+                    }
+                );
             } catch (error) {
-                console.error(error);
+                console.error("Failed to load prompts:", error);
                 setLoading(false);
             }
         };
@@ -46,25 +58,22 @@ const PromptsSection = (props: Props) => {
         return () => {
             unsubscribe?.();
         };
-    }, [user]);
+    }, [user, dispatch]);
 
     return (
         <section className="-mt-6 w-full h-auto rounded-b-lg border border-zinc-200 p-4 flex flex-col gap-4 dark:border-zinc-800">
-
-            {/* title */}
+            {/* Title */}
             <h4 className="font-semibold dark:text-white">
                 All Prompts
             </h4>
 
-            {/* prompt cards section */}
+            {/* Prompt Cards */}
             <section className="grid grid-cols-1 gap-4 md:grid-cols-4">
-
-
                 {loading ? (
                     Array.from({ length: 4 }).map((_, index) => (
                         <PromptCardSkeleton key={index} />
                     ))
-                ) : prompts && prompts.length > 0 ? (
+                ) : prompts.length > 0 ? (
                     prompts.map((prompt) => (
                         <PromptCard
                             key={prompt.id}
@@ -73,14 +82,12 @@ const PromptsSection = (props: Props) => {
                     ))
                 ) : (
                     <div className="col-span-full py-16 text-center text-zinc-500 dark:text-zinc-400">
-                        No prompts yet.
+                        No prompts found.
                     </div>
                 )}
-
             </section>
-
         </section>
-    )
-}
+    );
+};
 
-export default PromptsSection
+export default PromptsSection;

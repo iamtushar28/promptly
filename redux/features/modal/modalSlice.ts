@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 /* ==========================================================
    Modal State Interface
@@ -9,6 +9,9 @@ interface ModalState {
 
   /* Controls View Prompt Modal */
   isViewPromptOpen: boolean;
+
+  /* Currently selected prompt id */
+  selectedPromptId: string | null;
 }
 
 /* ==========================================================
@@ -17,6 +20,7 @@ interface ModalState {
 const initialState: ModalState = {
   isAddPromptOpen: false,
   isViewPromptOpen: false,
+  selectedPromptId: null,
 };
 
 /* ==========================================================
@@ -30,44 +34,44 @@ const modalSlice = createSlice({
   reducers: {
     /* ================= Add Prompt Modal ================= */
 
-    // Open Add Prompt Modal
     openAddPromptModal: (state) => {
       state.isAddPromptOpen = true;
     },
 
-    // Close Add Prompt Modal
     closeAddPromptModal: (state) => {
       state.isAddPromptOpen = false;
     },
 
-    // Toggle Add Prompt Modal
     toggleAddPromptModal: (state) => {
       state.isAddPromptOpen = !state.isAddPromptOpen;
     },
 
     /* ================= View Prompt Modal ================= */
 
-    // Open View Prompt Modal
-    openViewPromptModal: (state) => {
+    openViewPromptModal: (state, action: PayloadAction<string>) => {
       state.isViewPromptOpen = true;
+      state.selectedPromptId = action.payload;
     },
 
-    // Close View Prompt Modal
     closeViewPromptModal: (state) => {
       state.isViewPromptOpen = false;
+      state.selectedPromptId = null;
     },
 
-    // Toggle View Prompt Modal
     toggleViewPromptModal: (state) => {
       state.isViewPromptOpen = !state.isViewPromptOpen;
+
+      if (!state.isViewPromptOpen) {
+        state.selectedPromptId = null;
+      }
     },
 
     /* ================= Utility ================= */
 
-    // Close all modals at once
     closeAllModals: (state) => {
       state.isAddPromptOpen = false;
       state.isViewPromptOpen = false;
+      state.selectedPromptId = null;
     },
   },
 });
@@ -75,6 +79,7 @@ const modalSlice = createSlice({
 /* ==========================================================
    Export Actions
 ========================================================== */
+
 export const {
   openAddPromptModal,
   closeAddPromptModal,
@@ -90,4 +95,5 @@ export const {
 /* ==========================================================
    Export Reducer
 ========================================================== */
+
 export default modalSlice.reducer;

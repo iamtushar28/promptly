@@ -1,27 +1,49 @@
-import React from "react";
-import StatsCard from "./StatsCard";
+"use client";
 
-/* ================= Stats Data ================= */
-const stats = [
-    {
-        title: "Total Prompts",
-        value: 100,
-    },
-    {
-        title: "Categories",
-        value: 12,
-    },
-    {
-        title: "Favorites",
-        value: 28,
-    },
-    {
-        title: "Recently Added",
-        value: 54,
-    },
-];
+import React from "react";
+import { useSelector } from "react-redux";
+
+import StatsCard from "./StatsCard";
+import { RootState } from "@/redux/store";
 
 const Greeting = () => {
+    const user = useSelector((state: RootState) => state.auth.user);
+    const prompts = useSelector((state: RootState) => state.prompt.prompts);
+
+    // Total prompts
+    const totalPrompts = prompts.length;
+
+    // Favourite prompts
+    const favourites = prompts.filter(
+        (prompt) => prompt.favourite
+    ).length;
+
+    // Prompts added in the last 24 hours
+    const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+
+    const recentlyAdded = prompts.filter(
+        (prompt) => prompt.createdAt >= oneDayAgo
+    ).length;
+
+    const stats = [
+        {
+            title: "Total Prompts",
+            value: totalPrompts,
+        },
+        {
+            title: "Categories",
+            value: 10,
+        },
+        {
+            title: "Favorites",
+            value: favourites,
+        },
+        {
+            title: "Recently Added",
+            value: recentlyAdded,
+        },
+    ];
+
     return (
         <section className="w-full space-y-5">
 

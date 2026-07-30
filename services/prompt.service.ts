@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "@/firebase/config";
+import { PromptUI } from "@/types/prompt-ui";
 
 import {
   CreatePromptPayload,
@@ -29,6 +30,18 @@ const promptCollection = (userId: string) =>
 
 const promptDocument = (userId: string, promptId: string) =>
   doc(db, COLLECTION, userId, "items", promptId);
+
+// ======================================================
+// Mapper
+// ======================================================
+
+const toPromptUI = (prompt: Prompt): PromptUI => ({
+  ...prompt,
+
+  createdAt: prompt.createdAt?.toMillis() ?? 0,
+
+  updatedAt: prompt.updatedAt?.toMillis() ?? 0,
+});
 
 // ======================================================
 // Create Prompt
@@ -87,22 +100,22 @@ const remove = async (userId: string, promptId: string): Promise<void> => {
 const getById = async (
   userId: string,
   promptId: string,
-): Promise<Prompt | null> => {
+): Promise<PromptUI | null> => {
   const snapshot = await getDoc(promptDocument(userId, promptId));
 
   if (!snapshot.exists()) return null;
 
-  return snapshot.data() as Prompt;
+  return toPromptUI(snapshot.data() as Prompt);
 };
 
 // ======================================================
 // Get All Prompts
 // ======================================================
 
-const getAll = async (userId: string): Promise<Prompt[]> => {
+const getAll = async (userId: string): Promise<PromptUI[]> => {
   const snapshot = await getDocs(promptCollection(userId));
 
-  return snapshot.docs.map((document) => document.data() as Prompt);
+  return snapshot.docs.map((document) => toPromptUI(document.data() as Prompt));
 };
 
 // ======================================================
@@ -121,7 +134,6 @@ const toggleFavourite = async (
 
   await updateDoc(promptDocument(userId, promptId), {
     favourite: !prompt.favourite,
-    updatedAt: serverTimestamp(),
   });
 };
 
@@ -141,7 +153,6 @@ const togglePinned = async (
 
   await updateDoc(promptDocument(userId, promptId), {
     pinned: !prompt.pinned,
-    updatedAt: serverTimestamp(),
   });
 };
 
@@ -149,9 +160,11 @@ const togglePinned = async (
 // Subscribe To Prompts (Realtime)
 // ======================================================
 
-const subscribe = (userId: string, callback: (prompts: Prompt[]) => void) => {
+const subscribe = (userId: string, callback: (prompts: PromptUI[]) => void) => {
   return onSnapshot(promptCollection(userId), (snapshot) => {
-    const prompts = snapshot.docs.map((doc) => doc.data() as Prompt);
+    const prompts = snapshot.docs.map((doc) =>
+      toPromptUI(doc.data() as Prompt),
+    );
 
     callback(prompts);
   });

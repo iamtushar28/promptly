@@ -6,13 +6,14 @@ import { BsCopy, BsThreeDotsVertical, BsCheckCircleFill } from "react-icons/bs";
 import { TiPin, TiPinOutline } from "react-icons/ti";
 import { useDispatch } from "react-redux";
 import { openViewPromptModal } from "@/redux/features/modal/modalSlice";
-import { Prompt } from "@/types/prompt";
 import { PromptService } from "@/services/prompt.service";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { PromptUI } from "@/types/prompt-ui";
+import { usePromptActions } from "@/hooks/usePromptActions";
 
 type Props = {
-    prompt: Prompt;
+    prompt: PromptUI;
 };
 
 const PromptCard = ({ prompt }: Props) => {
@@ -21,14 +22,14 @@ const PromptCard = ({ prompt }: Props) => {
 
     /* ================= Open View Modal ================= */
     const handleOpenPrompt = () => {
-        dispatch(openViewPromptModal());
+        dispatch(openViewPromptModal(prompt.id));
     };
 
     /* ================= Format Created Time ================= */
     const formatTimeAgo = () => {
         if (!prompt.createdAt) return "Just now";
 
-        const created = prompt.createdAt.toDate();
+        const created = new Date(prompt.createdAt);
         const now = new Date();
 
         const seconds = Math.floor(
@@ -49,54 +50,32 @@ const PromptCard = ({ prompt }: Props) => {
         return created.toLocaleDateString();
     };
 
-    /* ================= Toggle Favourite ================= */
-    const handleToggleFavourite = async (
+    const {
+        copied,
+        copyPrompt,
+        toggleFavourite,
+        togglePinned,
+    } = usePromptActions();
+
+    const handleToggleFavourite = (
         e: React.MouseEvent<HTMLButtonElement>
     ) => {
         e.stopPropagation();
-
-        if (!user) return;
-
-        try {
-            await PromptService.toggleFavourite(user.uid, prompt.id);
-        } catch (error) {
-            console.error(error);
-        }
+        toggleFavourite(prompt.id);
     };
 
-    /* ================= Toggle Pinned ================= */
-    const handleTogglePinned = async (
+    const handleTogglePinned = (
         e: React.MouseEvent<HTMLButtonElement>
     ) => {
         e.stopPropagation();
-
-        if (!user) return;
-
-        try {
-            await PromptService.togglePinned(user.uid, prompt.id);
-        } catch (error) {
-            console.error(error);
-        }
+        togglePinned(prompt.id);
     };
 
-    const [copied, setCopied] = useState(false);
-    /* ================= Copy Prompt ================= */
-    const handleCopy = async (
+    const handleCopy = (
         e: React.MouseEvent<HTMLButtonElement>
     ) => {
         e.stopPropagation();
-
-        try {
-            await navigator.clipboard.writeText(prompt.prompt);
-
-            setCopied(true);
-
-            setTimeout(() => {
-                setCopied(false);
-            }, 2500);
-        } catch (error) {
-            console.error(error);
-        }
+        copyPrompt(prompt.prompt);
     };
 
     return (
