@@ -12,19 +12,16 @@ export interface Prompt {
 
   tags: string[];
 
-  createdBy: string;
+  favourite: boolean;
+  pinned: boolean;
 
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: Timestamp | null;
+  updatedAt: Timestamp | null;
 }
 
-export interface CreatePromptPayload {
-  title: string;
-  prompt: string;
+export type CreatePromptPayload = Omit<
+  Prompt,
+  "id" | "favourite" | "pinned" | "createdAt" | "updatedAt"
+>;
 
-  description?: string;
-
-  category: string;
-
-  tags: string[];
-}
+export type UpdatePromptPayload = Partial<CreatePromptPayload>;
