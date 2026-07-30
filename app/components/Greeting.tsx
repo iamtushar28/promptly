@@ -10,6 +10,10 @@ const Greeting = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     const prompts = useSelector((state: RootState) => state.prompt.prompts);
 
+    //user name
+    const firstName =
+        user?.name?.trim().split(" ")[0] || "User";
+
     // Total prompts
     const totalPrompts = prompts.length;
 
@@ -50,7 +54,7 @@ const Greeting = () => {
             {/* ================= Greeting Section ================= */}
             <div>
                 <h2 className="text-xl font-semibold text-zinc-900 transition-colors duration-300 dark:text-white md:text-2xl">
-                    Welcome back, Tushar! 👋
+                    Welcome back, {firstName}! 👋
                 </h2>
 
                 <p className="mt-1 text-sm text-zinc-500 transition-colors duration-300 dark:text-zinc-400">

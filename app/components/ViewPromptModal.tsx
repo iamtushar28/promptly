@@ -18,6 +18,7 @@ const ViewPromptModal = () => {
         copyPrompt,
         toggleFavourite,
         togglePinned,
+        deletePrompt,
     } = usePromptActions();
 
     const dispatch = useDispatch();
@@ -190,9 +191,13 @@ const ViewPromptModal = () => {
                                     )}
                                 </button>
 
-                                <button className="flex h-10 items-center gap-2 rounded-lg border border-zinc-200 px-4 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer">
-                                    <BsThreeDotsVertical />
-                                    More
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        deletePrompt(selectedPrompt.id);
+                                    }}
+                                    className="flex h-10 items-center gap-2 rounded-lg border border-zinc-200 px-4 text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 cursor-pointer">
+                                    Delete
                                 </button>
                             </div>
 

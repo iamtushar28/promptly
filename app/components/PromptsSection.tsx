@@ -12,6 +12,8 @@ import { RootState, AppDispatch } from "@/redux/store";
 
 import { setPrompts } from "@/redux/features/prompt/promptSlice";
 import { selectFilteredPrompts } from "@/redux/features/prompt/promptSelectors";
+import { openAddPromptModal } from "@/redux/features/modal/modalSlice";
+import { IoMdAdd } from "react-icons/io";
 
 const PromptsSection = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -81,8 +83,19 @@ const PromptsSection = () => {
                         />
                     ))
                 ) : (
-                    <div className="col-span-full py-16 text-center text-zinc-500 dark:text-zinc-400">
-                        No prompts found.
+                    <div className="col-span-full py-16 text-center text-zinc-500 dark:text-zinc-400 flex flex-col gap-2 justify-center items-center">
+                        <p>
+                            No prompts found.
+                        </p>
+                        <button
+                            onClick={() => dispatch(openAddPromptModal())}
+                            className="flex cursor-pointer items-center gap-1 rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-700 active:scale-95 md:px-4"
+                        >
+                            {/* Add Icon */}
+                            <IoMdAdd className="text-lg" />
+
+                            Add Prompt
+                        </button>
                     </div>
                 )}
             </section>

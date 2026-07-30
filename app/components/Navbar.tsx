@@ -92,7 +92,7 @@ const Navbar = () => {
 
                         {/* Hide on Small Screens */}
                         <span className="hidden sm:block">
-                            New
+                            Prompt
                         </span>
                     </button>
 
