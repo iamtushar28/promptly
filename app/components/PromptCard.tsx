@@ -121,7 +121,7 @@ const PromptCard = ({ prompt }: Props) => {
                     <button
                         onClick={handleTogglePinned}
                         className={`flex h-8 w-8 items-center justify-center rounded-md text-xl transition-colors duration-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer ${prompt.pinned
-                            ? "text-blue-500"
+                            ? "text-blue-600"
                             : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                             }`}
                     >

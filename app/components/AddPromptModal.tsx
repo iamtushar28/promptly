@@ -374,10 +374,10 @@ const AddPromptModal = () => {
                                             />
                                         </svg>
 
-                                        Creating...
+                                        Adding...
                                     </>
                                 ) : (
-                                    "Create Prompt"
+                                    "Add Prompt"
                                 )}
                             </button>
 

@@ -14,7 +14,7 @@ import {
 } from "@/redux/features/prompt/promptSlice";
 
 import { categories } from "@/redux/features/prompt/promptSelectors";
-import ExportPromptsButton from "./ExportPromptsButton";
+import PromptActionsDropdown from "./PromptActionsDropdown";
 
 const PromptSearch = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -66,7 +66,6 @@ const PromptSearch = () => {
                 <div className="flex items-center gap-2 overflow-x-auto">
 
                     {/* Favourite */}
-
                     <button
                         onClick={() =>
                             dispatch(
@@ -84,7 +83,6 @@ const PromptSearch = () => {
                     </button>
 
                     {/* Category */}
-
                     <select
                         value={category}
                         onChange={(e) =>
@@ -103,7 +101,6 @@ const PromptSearch = () => {
                     </select>
 
                     {/* Sort */}
-
                     <select
                         value={sort}
                         onChange={(e) =>
@@ -137,7 +134,7 @@ const PromptSearch = () => {
                     </select>
 
                     {/* Export */}
-                    <ExportPromptsButton />
+                    <PromptActionsDropdown />
 
                 </div>
 
