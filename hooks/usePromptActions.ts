@@ -49,12 +49,6 @@ export const usePromptActions = () => {
   const deletePrompt = async (promptId: string, closeModal = false) => {
     if (!user) return;
 
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this prompt?",
-    );
-
-    if (!confirmed) return;
-
     try {
       await PromptService.delete(user.uid, promptId);
 
@@ -66,11 +60,35 @@ export const usePromptActions = () => {
     }
   };
 
+  //Format Created Time
+  const formatTimeAgo = (timestamp?: number | string | Date): string => {
+    if (!timestamp) return "Just now";
+
+    const created = new Date(timestamp);
+    const now = new Date();
+
+    const seconds = Math.floor((now.getTime() - created.getTime()) / 1000);
+
+    if (seconds < 60) return "Just now";
+
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+
+    const days = Math.floor(hours / 24);
+    if (days < 7) return `${days}d ago`;
+
+    return created.toLocaleDateString();
+  };
+
   return {
     copied,
     copyPrompt,
     toggleFavourite,
     togglePinned,
     deletePrompt,
+    formatTimeAgo,
   };
 };

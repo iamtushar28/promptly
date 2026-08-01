@@ -1,12 +1,9 @@
 "use client";
-
-import React, { useState } from "react";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { BsCopy, BsThreeDotsVertical, BsCheckCircleFill } from "react-icons/bs";
 import { TiPin, TiPinOutline } from "react-icons/ti";
 import { useDispatch } from "react-redux";
 import { openViewPromptModal } from "@/redux/features/modal/modalSlice";
-import { PromptService } from "@/services/prompt.service";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { PromptUI } from "@/types/prompt-ui";
@@ -25,36 +22,12 @@ const PromptCard = ({ prompt }: Props) => {
         dispatch(openViewPromptModal(prompt.id));
     };
 
-    /* ================= Format Created Time ================= */
-    const formatTimeAgo = () => {
-        if (!prompt.createdAt) return "Just now";
-
-        const created = new Date(prompt.createdAt);
-        const now = new Date();
-
-        const seconds = Math.floor(
-            (now.getTime() - created.getTime()) / 1000
-        );
-
-        if (seconds < 60) return "Just now";
-
-        const minutes = Math.floor(seconds / 60);
-        if (minutes < 60) return `${minutes}m ago`;
-
-        const hours = Math.floor(minutes / 60);
-        if (hours < 24) return `${hours}h ago`;
-
-        const days = Math.floor(hours / 24);
-        if (days < 7) return `${days}d ago`;
-
-        return created.toLocaleDateString();
-    };
-
     const {
         copied,
         copyPrompt,
         toggleFavourite,
         togglePinned,
+        formatTimeAgo,
     } = usePromptActions();
 
     const handleToggleFavourite = (
@@ -81,7 +54,7 @@ const PromptCard = ({ prompt }: Props) => {
     return (
         <article
             onClick={handleOpenPrompt}
-            className="flex h-44 cursor-pointer flex-col justify-between rounded-xl border border-zinc-200 bg-white p-4 transition-all duration-300 hover:border-zinc-300 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+            className={`flex h-44 cursor-pointer flex-col justify-between rounded-xl border border-zinc-200 bg-white p-4 transition-all duration-300 hover:border-zinc-300 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700 ${prompt.pinned && 'ring-1 ring-blue-600'}`}
         >
             {/* ================= Header ================= */}
             <div className="flex items-start justify-between">
@@ -116,10 +89,22 @@ const PromptCard = ({ prompt }: Props) => {
 
                 {/* Tags */}
                 {prompt.tags.length > 0 && (
-                    <span className="truncate text-xs text-zinc-500 dark:text-zinc-400">
-                        {prompt.tags.slice(0, 2).join(", ")}
-                        {prompt.tags.length > 2 && "..."}
-                    </span>
+                    <div className="flex flex-wrap gap-1">
+                        {prompt.tags.slice(0, 2).map((tag) => (
+                            <span
+                                key={tag}
+                                className="text-xs font-medium text-blue-700 dark:text-blue-400"
+                            >
+                                #{tag}
+                            </span>
+                        ))}
+
+                        {prompt.tags.length > 2 && (
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                                ...
+                            </span>
+                        )}
+                    </div>
                 )}
             </div>
 
@@ -127,7 +112,7 @@ const PromptCard = ({ prompt }: Props) => {
             <div className="flex items-center justify-between">
                 {/* Created Time */}
                 <p className="text-xs text-zinc-400 transition-colors duration-300 dark:text-zinc-500">
-                    {formatTimeAgo()}
+                    {formatTimeAgo(prompt.createdAt)}
                 </p>
 
                 {/* Actions */}
@@ -135,7 +120,7 @@ const PromptCard = ({ prompt }: Props) => {
                     {/* Pinned Button */}
                     <button
                         onClick={handleTogglePinned}
-                        className={`flex h-8 w-8 items-center justify-center rounded-md text-lg transition-colors duration-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer ${prompt.pinned
+                        className={`flex h-8 w-8 items-center justify-center rounded-md text-xl transition-colors duration-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer ${prompt.pinned
                             ? "text-blue-500"
                             : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                             }`}
@@ -146,7 +131,7 @@ const PromptCard = ({ prompt }: Props) => {
                     {/* Favourite Button */}
                     <button
                         onClick={handleToggleFavourite}
-                        className={`flex h-8 w-8 items-center justify-center rounded-md text-lg transition-colors duration-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer ${prompt.favourite
+                        className={`flex h-8 w-8 items-center justify-center rounded-md text-xl transition-colors duration-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer ${prompt.favourite
                             ? "text-red-500"
                             : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                             }`}
@@ -157,7 +142,7 @@ const PromptCard = ({ prompt }: Props) => {
                     {/* Copy Button */}
                     <button
                         onClick={handleCopy}
-                        className={`flex h-8 w-8 items-center justify-center rounded-md text-lg transition-colors duration-300 cursor-pointer ${copied
+                        className={`flex h-8 w-8 items-center justify-center rounded-md text-xl transition-colors duration-300 cursor-pointer ${copied
                             ? "text-black dark:text-white"
                             : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
                             }`}

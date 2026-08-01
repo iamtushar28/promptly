@@ -3,6 +3,7 @@ import PromptSearch from "./components/PromptSearch";
 import PromptsSection from "./components/PromptsSection";
 import AddPromptModal from "./components/AddPromptModal";
 import ViewPromptModal from "./components/ViewPromptModal";
+import EditPromptModal from "./components/EditPromptModal";
 
 export default function Home() {
   return (
@@ -24,6 +25,9 @@ export default function Home() {
 
       {/* ================= Add Prompt Modal ================= */}
       <AddPromptModal />
+
+      {/* ================= Edit Prompt Modal ================= */}
+      <EditPromptModal />
 
       {/* ================= View Prompt Modal ================= */}
       <ViewPromptModal />

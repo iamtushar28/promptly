@@ -10,6 +10,9 @@ interface ModalState {
   /* Controls View Prompt Modal */
   isViewPromptOpen: boolean;
 
+  /* Controls Edit Prompt Modal */
+  isEditPromptOpen: boolean;
+
   /* Currently selected prompt id */
   selectedPromptId: string | null;
 }
@@ -20,6 +23,7 @@ interface ModalState {
 const initialState: ModalState = {
   isAddPromptOpen: false,
   isViewPromptOpen: false,
+  isEditPromptOpen: false,
   selectedPromptId: null,
 };
 
@@ -66,11 +70,34 @@ const modalSlice = createSlice({
       }
     },
 
+    /* ================= Edit Prompt Modal ================= */
+    openEditPromptModal: (state, action: PayloadAction<string>) => {
+      state.isViewPromptOpen = false; // Close View
+      state.isAddPromptOpen = false; // Close Add
+
+      state.isEditPromptOpen = true;
+      state.selectedPromptId = action.payload;
+    },
+
+    closeEditPromptModal: (state) => {
+      state.isEditPromptOpen = false;
+      state.selectedPromptId = null;
+    },
+
+    toggleEditPromptModal: (state) => {
+      state.isEditPromptOpen = !state.isEditPromptOpen;
+
+      if (!state.isEditPromptOpen) {
+        state.selectedPromptId = null;
+      }
+    },
+
     /* ================= Utility ================= */
 
     closeAllModals: (state) => {
       state.isAddPromptOpen = false;
       state.isViewPromptOpen = false;
+      state.isEditPromptOpen = false;
       state.selectedPromptId = null;
     },
   },
@@ -88,6 +115,10 @@ export const {
   openViewPromptModal,
   closeViewPromptModal,
   toggleViewPromptModal,
+
+  openEditPromptModal,
+  closeEditPromptModal,
+  toggleEditPromptModal,
 
   closeAllModals,
 } = modalSlice.actions;
